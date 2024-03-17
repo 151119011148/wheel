@@ -1,3 +1,4 @@
+CREATE database `wheel`;
 CREATE TABLE `wheel`.`user`  (
                                          `id` int(0) NOT NULL AUTO_INCREMENT,
                                          `user_id` varchar(64),
@@ -8,7 +9,7 @@ CREATE TABLE `wheel`.`user`  (
                                          `is_removed` tinyint(4) NOT NULL COMMENT '是否被删除',
                                          PRIMARY KEY (`id`)
 );
-INSERT INTO `user` VALUES (1, 'UserID_123456', 'admin', 'admin', '2024-03-06 10:52:48', '2024-03-06 10:52:50', 0);
+INSERT INTO `wheel`.`user` VALUES (1, 'UserID_123456', 'admin', 'admin', '2024-03-06 10:52:48', '2024-03-06 10:52:50', 0);
 
 
 
