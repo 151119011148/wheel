@@ -16,7 +16,7 @@ import javax.annotation.Resource;
  * @Date 2023/9/3 9:54 AM
  **/
 @RestController
-@RequestMapping("/mail")
+@RequestMapping("/service/mail")
 public class MailController extends BaseController {
 
     @Resource

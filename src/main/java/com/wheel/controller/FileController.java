@@ -16,7 +16,7 @@ import java.util.List;
  * @Date 2023/9/3 9:54 AM
  **/
 @RestController
-@RequestMapping("/file")
+@RequestMapping("/service/file")
 public class FileController extends BaseController {
 
     @Resource
