@@ -22,7 +22,7 @@ import java.util.Objects;
  * @Date 2023/9/3 9:54 AM
  **/
 @RestController
-@RequestMapping("/product")
+@RequestMapping("/api/product")
 public class ProductController extends BaseController {
 
     @Resource

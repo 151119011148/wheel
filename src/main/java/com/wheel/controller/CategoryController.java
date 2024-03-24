@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
  * @Date 2023/9/3 9:54 AM
  **/
 @RestController
-@RequestMapping("/category")
+@RequestMapping("/api/category")
 public class CategoryController extends BaseController {
 
     @Resource
