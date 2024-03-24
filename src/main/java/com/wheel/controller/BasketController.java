@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
  * @Date 2023/9/3 9:54 AM
  **/
 @RestController
-@RequestMapping("/api/basket")
+@RequestMapping("/service/basket")
 public class BasketController extends BaseController {
 
     @Resource
