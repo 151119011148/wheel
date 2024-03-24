@@ -50,7 +50,7 @@ public class MailService {
     @Value("${spring.mail.to}")
     private String to;
 
-    private static final String sourceFrom = "a letter from {0}:{1}";
+    private static final String sourceFrom = "from <{0}>:{1}";
 
 
     public void send(MailParam param) {
