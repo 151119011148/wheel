@@ -44,7 +44,7 @@ public class MailService {
     Mapper beanMapper;
 
     @Value("${spring.mail.username}")
-    private String from;
+    private String to;
 
     public void send(MailParam param) {
         this.add(param);
@@ -69,9 +69,9 @@ public class MailService {
      */
     public void sendSimpleMail(MailParam param) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(from);
+        message.setFrom(param.getEmail());
         message.setSubject(param.getSubject());
-        message.setTo(param.getEmail());
+        message.setTo(to);
         message.setSentDate(new Date());
         message.setText(param.getMessage());
         javaMailSender.send(message);
@@ -85,9 +85,9 @@ public class MailService {
     public void sendAttachFileMail(MailParam param, List<File> files) throws MessagingException {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
-        helper.setFrom(from);
+        helper.setFrom(param.getEmail());
         helper.setSubject(param.getSubject());
-        helper.setTo(param.getEmail());
+        helper.setTo(to);
         helper.setSentDate(new Date());
         helper.setText(param.getMessage());
 
