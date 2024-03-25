@@ -39,7 +39,7 @@ CREATE TABLE `wheel`.`product` (
                                        `diameter` VARCHAR ( 20 ),
                                        `brand_name` VARCHAR ( 20 ),
                                        `width` VARCHAR ( 20 ),
-                                       `car_make` VARCHAR ( 20 ),
+                                       `car_make` VARCHAR ( 512 ),
                                        `available_size` VARCHAR ( 20 ),
                                        `available_size_detail` VARCHAR ( 512 ),
                                        `available_finish` VARCHAR ( 20 ),
