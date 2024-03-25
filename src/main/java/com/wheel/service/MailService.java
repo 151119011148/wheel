@@ -24,6 +24,7 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import java.io.File;
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -45,6 +46,12 @@ public class MailService {
 
     @Value("${spring.mail.username}")
     private String from;
+
+    @Value("${spring.mail.to}")
+    private String to;
+
+    private static final String sourceFrom = "from <{0}>:{1}";
+
 
     public void send(MailParam param) {
         this.add(param);
@@ -70,8 +77,8 @@ public class MailService {
     public void sendSimpleMail(MailParam param) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(from);
-        message.setSubject(param.getSubject());
-        message.setTo(param.getEmail());
+        message.setSubject(MessageFormat.format(sourceFrom, param.getEmail(), param.getSubject()));
+        message.setTo(to);
         message.setSentDate(new Date());
         message.setText(param.getMessage());
         javaMailSender.send(message);
@@ -86,8 +93,8 @@ public class MailService {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
         helper.setFrom(from);
-        helper.setSubject(param.getSubject());
-        helper.setTo(param.getEmail());
+        helper.setSubject(MessageFormat.format(sourceFrom, param.getEmail(), param.getSubject()));
+        helper.setTo(to);
         helper.setSentDate(new Date());
         helper.setText(param.getMessage());
 

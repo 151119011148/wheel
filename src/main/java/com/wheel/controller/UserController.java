@@ -18,7 +18,7 @@ import javax.annotation.Resource;
  * @Date 2023/9/3 9:54 AM
  **/
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/service/user")
 public class UserController extends BaseController {
 
     @Resource
