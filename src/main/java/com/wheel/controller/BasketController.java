@@ -73,10 +73,8 @@ public class BasketController extends BaseController {
     }
 
     private BasketVO buildBasketVO(String ip, List<String> productIds) {
-        List<ProductVO> productData = productIds
-                .parallelStream()
-                .map(productId -> productService.findOneById(productId))
-                .collect(Collectors.toList());
+        List<ProductVO> productData = productService.findByIds(productIds);
+
 
         BasketVO result = new BasketVO();
         result.setVisitId(ip);

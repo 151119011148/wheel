@@ -160,4 +160,9 @@ public class ProductService {
     }
 
 
+    public List<ProductVO> findByIds(List<String> productIds) {
+        List<ProductDO> records = Lists.newArrayList();
+        productIds.forEach(id -> records.addAll(this.findById(id)));
+        return records.stream().map(this::fillInfo).collect(Collectors.toList());
+    }
 }
