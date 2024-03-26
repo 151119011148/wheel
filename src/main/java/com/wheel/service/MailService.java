@@ -1,6 +1,9 @@
 package com.wheel.service;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.wheel.controller.request.MailParam;
+import com.wheel.controller.response.ProductVO;
 import com.wheel.dao.MailDao;
 import com.wheel.dao.dataObject.MailDO;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +29,12 @@ import javax.mail.internet.MimeMultipart;
 import java.io.File;
 import java.text.MessageFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import static java.util.Arrays.stream;
 
 @Slf4j
 @Service
@@ -80,7 +88,19 @@ public class MailService {
         message.setSubject(MessageFormat.format(sourceFrom, param.getEmail(), param.getSubject()));
         message.setTo(to);
         message.setSentDate(new Date());
-        message.setText(param.getMessage());
+        StringBuilder stringBuilder = new StringBuilder();
+        JSON.parseArray(param.getProducts())
+                .stream()
+                .forEach(product -> stringBuilder.append(((JSONObject)product).getString("model"))
+                        .append(":")
+                        .append("http://43.135.159.250:3000/products/" + ((JSONObject)product).getString("productId"))
+                        .append("\r\n"));
+
+
+        message.setText(param.getMessage()
+                + "\r\n----------------------------------------------------------------------------"
+                + "\r\nproduct link as below:\r\n"
+                + stringBuilder);
         javaMailSender.send(message);
     }
 
@@ -96,7 +116,17 @@ public class MailService {
         helper.setSubject(MessageFormat.format(sourceFrom, param.getEmail(), param.getSubject()));
         helper.setTo(to);
         helper.setSentDate(new Date());
-        helper.setText(param.getMessage());
+        StringBuilder stringBuilder = new StringBuilder();
+        JSON.parseArray(param.getProducts())
+                .stream()
+                .forEach(product -> stringBuilder.append(((JSONObject)product).getString("model"))
+                        .append(":")
+                        .append("http://43.135.159.250:3000/products/" + ((JSONObject)product).getString("productId"))
+                        .append("\r\n"));
+        helper.setText(param.getMessage()
+                + "\r\n----------------------------------------------------------------------------"
+                + "\r\nproduct link as below:\r\n"
+                + stringBuilder);
 
         Multipart multipart = new MimeMultipart();
         BodyPart bodyPart = new MimeBodyPart();
