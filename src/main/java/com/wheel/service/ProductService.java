@@ -110,12 +110,10 @@ public class ProductService {
             BasketDO basketParam = new BasketDO();
             basketParam.setVisitId(param.getQueryValue());
             Example<BasketDO> example = Example.of(basketParam);
-            List<ProductVO> result = basketDao.findOne(example)
-                    .map(basket -> ((List<String>) JSON.parse(basket.getProductIds()))
-                            .parallelStream()
-                            .map(productId -> this.findOneById(productId))
-                            .collect(Collectors.toList()))
-                    .orElse(Lists.newArrayList());
+            List<ProductVO> result = Lists.newArrayList();
+            basketDao.findOne(example)
+                    .map(basket -> ((List<String>) JSON.parse(basket.getProductIds())))
+                    .map(ids -> result.addAll(findByIds(ids)));
             return new PageImpl(result);
         }
         ProductDO condition = new ProductDO();
