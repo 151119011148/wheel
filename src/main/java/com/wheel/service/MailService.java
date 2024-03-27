@@ -123,14 +123,15 @@ public class MailService {
                         .append(":")
                         .append("http://43.135.159.250:3000/products/" + ((JSONObject)product).getString("productId"))
                         .append("\r\n"));
-        helper.setText(param.getMessage()
+        String text = param.getMessage()
                 + "\r\n----------------------------------------------------------------------------"
                 + "\r\nproduct link as below:\r\n"
-                + stringBuilder);
+                + stringBuilder;
+        helper.setText(text);
 
         Multipart multipart = new MimeMultipart();
         BodyPart bodyPart = new MimeBodyPart();
-        bodyPart.setContent(param.getMessage(), "text/html;charset=UTF-8");
+        bodyPart.setText(text);
         multipart.addBodyPart(bodyPart);
         // 文件路径
         files.forEach(file -> {
