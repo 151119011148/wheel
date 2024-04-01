@@ -58,6 +58,10 @@ public class MailService {
     @Value("${spring.mail.to}")
     private String to;
 
+    @Value("${server.ip}")
+    private String ip;
+
+
     private static final String sourceFrom = "from <{0}>:{1}";
 
 
@@ -93,7 +97,10 @@ public class MailService {
                 .stream()
                 .forEach(product -> stringBuilder.append(((JSONObject)product).getString("model"))
                         .append(":")
-                        .append("http://43.135.159.250:3000/products/" + ((JSONObject)product).getString("productId"))
+                        .append("http://")
+                        .append(ip)
+                        .append(":3000/products/")
+                        .append(((JSONObject)product).getString("productId"))
                         .append("\r\n"));
 
 
@@ -121,7 +128,10 @@ public class MailService {
                 .stream()
                 .forEach(product -> stringBuilder.append(((JSONObject)product).getString("model"))
                         .append(":")
-                        .append("http://43.135.159.250:3000/products/" + ((JSONObject)product).getString("productId"))
+                        .append("http://")
+                        .append(ip)
+                        .append(":3000/products/")
+                        .append(((JSONObject)product).getString("productId"))
                         .append("\r\n"));
         String text = param.getMessage()
                 + "\r\n----------------------------------------------------------------------------"
