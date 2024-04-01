@@ -100,7 +100,7 @@ public class MailService {
                         .append(":")
                         .append("http://")
                         .append(ip)
-                        .append(":3000/products/")
+                        .append("/products/")
                         .append(((JSONObject)product).getString("productId"))
                         .append("\r\n"));
         String msg = param.getMessage();
@@ -133,7 +133,7 @@ public class MailService {
                         .append(":")
                         .append("http://")
                         .append(ip)
-                        .append(":3000/products/")
+                        .append("/products/")
                         .append(((JSONObject)product).getString("productId"))
                         .append("\r\n"));
 
