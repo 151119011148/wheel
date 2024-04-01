@@ -8,6 +8,7 @@ import com.wheel.dao.MailDao;
 import com.wheel.dao.dataObject.MailDO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
@@ -102,12 +103,14 @@ public class MailService {
                         .append(":3000/products/")
                         .append(((JSONObject)product).getString("productId"))
                         .append("\r\n"));
+        String msg = param.getMessage();
+        if (StringUtils.isNotBlank(stringBuilder)){
+            msg = msg + "\r\n----------------------------------------------------------------------------"
+                    + "\r\nproduct link as below:\r\n"
+                    + stringBuilder;
+        }
 
-
-        message.setText(param.getMessage()
-                + "\r\n----------------------------------------------------------------------------"
-                + "\r\nproduct link as below:\r\n"
-                + stringBuilder);
+        message.setText(msg);
         javaMailSender.send(message);
     }
 
@@ -133,15 +136,19 @@ public class MailService {
                         .append(":3000/products/")
                         .append(((JSONObject)product).getString("productId"))
                         .append("\r\n"));
-        String text = param.getMessage()
-                + "\r\n----------------------------------------------------------------------------"
-                + "\r\nproduct link as below:\r\n"
-                + stringBuilder;
-        helper.setText(text);
+
+        String msg = param.getMessage();
+        if (StringUtils.isNotBlank(stringBuilder)){
+            msg = msg + "\r\n----------------------------------------------------------------------------"
+                    + "\r\nproduct link as below:\r\n"
+                    + stringBuilder;
+        }
+
+        helper.setText(msg);
 
         Multipart multipart = new MimeMultipart();
         BodyPart bodyPart = new MimeBodyPart();
-        bodyPart.setText(text);
+        bodyPart.setText(msg);
         multipart.addBodyPart(bodyPart);
         // 文件路径
         files.forEach(file -> {
