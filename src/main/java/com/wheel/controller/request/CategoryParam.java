@@ -32,4 +32,10 @@ public class CategoryParam implements Serializable {
      */
     private String categoryDesc;
 
+
+    /**
+     *
+     */
+    private String index;
+
 }

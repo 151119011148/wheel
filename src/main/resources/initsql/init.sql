@@ -20,6 +20,7 @@ CREATE TABLE `wheel`.`category`  (
                                          `level` varchar(64),
                                          `name` varchar(64),
                                          `category_desc` varchar(2048),
+                                         `index` varchar(8),
                                          `gmt_create` datetime NOT NULL COMMENT '创建时间',
                                          `gmt_modified` datetime NOT NULL COMMENT '修改时间',
                                          `is_removed` tinyint(4) NOT NULL COMMENT '是否被删除',

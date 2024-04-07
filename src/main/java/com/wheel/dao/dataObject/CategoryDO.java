@@ -44,6 +44,9 @@ public class CategoryDO {
     @Column(name = "category_desc")
     private String categoryDesc;
 
+    @Column(name = "index")
+    private String index;
+
     @CreatedDate
     @Column(name = "gmt_create", nullable = false, updatable = false)
     @Temporal(TIMESTAMP)

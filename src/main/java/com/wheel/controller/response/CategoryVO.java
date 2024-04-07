@@ -35,6 +35,12 @@ public class CategoryVO implements TreeNode<CategoryVO, String>, Serializable {
      */
     private String categoryDesc;
 
+    /**
+     *
+     */
+    private String index;
+
+
     private List<CategoryVO> children;
 
     private Date createdTime;
