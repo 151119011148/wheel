@@ -70,6 +70,9 @@ public class CategoryDO {
         if (StringUtils.isNotBlank(update.getCategoryDesc())){
             this.categoryDesc = update.getCategoryDesc();
         }
+        if (StringUtils.isNotBlank(update.getIndex())){
+            this.index = update.getIndex();
+        }
     }
 
 }
