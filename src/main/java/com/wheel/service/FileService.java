@@ -37,7 +37,7 @@ public class FileService {
     @Value("${file.upload.resource.location:/Users/gaoying/Desktop/work/l78zdemo/wheel/src/main/resources/fileStorage/}")
     private String resourceLocation;
 
-    @Value(value = "${file.upload.suffix:jpg,jpeg,png,bmp,xls,xlsx,pdf}")
+    @Value(value = "${file.upload.suffix:jpg,jpeg,png}")
     private String fileUploadSuffix;
 
     public List<File> upload(List<MultipartFile> multipartFiles, boolean checkSuffixSuccess)  {
@@ -128,6 +128,12 @@ public class FileService {
             folder.mkdirs();
         }
         return Arrays.stream(Objects.requireNonNull(folder.listFiles()))
+                .filter(file -> {
+                    String fileName = file.getName();
+                    int lastIndexOfDot = fileName.lastIndexOf('.');
+                    String fileExtension = fileName.substring(lastIndexOfDot + 1);
+                    return fileUploadSuffix.contains(fileExtension);
+                })
                 .map(file -> new ImageVO(file.getName(), getFileUrl(file)))
                 .peek(image -> image.setIsUsed(CollectionUtils.isNotEmpty(productDao.findImageByFuzzy(image.getFileName()))))
                 .collect(Collectors.toList());

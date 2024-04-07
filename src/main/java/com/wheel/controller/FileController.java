@@ -66,7 +66,7 @@ public class FileController extends BaseController {
      * @param
      * @return
      */
-    @PostMapping("/listImages")
+    @GetMapping("/listImages")
     public Response<List<ImageVO>> listImages() {
         List<ImageVO> images = fileService.listImages();
         return new Response<>()
