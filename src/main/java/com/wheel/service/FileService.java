@@ -3,21 +3,23 @@ package com.wheel.service;
 import com.google.common.collect.Lists;
 import com.wheel.common.exception.ResultCode;
 import com.wheel.common.exception.ServiceException;
+import com.wheel.controller.response.ImageVO;
+import com.wheel.dao.ProductDao;
+import com.wheel.dao.dataObject.ProductDO;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.attribute.PosixFilePermission;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -25,12 +27,15 @@ import java.util.stream.Collectors;
 @Service
 public class FileService {
 
-    @Value("${file.upload.resource.location:/Users/gaoying/Desktop/work/l78zdemo/wheel/src/main/resources/fileStorage/}")
-    private String resourceLocation;
-
     //自己设置的目录
     public static final String fileDir = "img";
     public static final AtomicInteger SUFFIX = new AtomicInteger(0);
+
+    @Resource
+    ProductDao productDao;
+
+    @Value("${file.upload.resource.location:/Users/gaoying/Desktop/work/l78zdemo/wheel/src/main/resources/fileStorage/}")
+    private String resourceLocation;
 
     @Value(value = "${file.upload.suffix:jpg,jpeg,png,bmp,xls,xlsx,pdf}")
     private String fileUploadSuffix;
@@ -84,14 +89,14 @@ public class FileService {
         String originalFilename = multipartFile.getOriginalFilename();
         String suffix = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
         File file = upload(Lists.newArrayList(multipartFile), suffixList.contains(suffix)).get(0);
-        return File.separator + fileDir + File.separator + file.getName();
+        return getFileUrl(file);
     }
 
     public List<String> uploadImages(List<MultipartFile> multipartFiles)  {
         multipartFiles.stream().forEach(multipartFile -> {
             List<String> suffixList = Lists.newArrayList(fileUploadSuffix.split(","));
             String originalFilename = multipartFile.getOriginalFilename();
-            String suffix = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
+            String suffix = originalFilename.substring(originalFilename.lastIndexOf(".") + 1).toLowerCase();
             //校验文件后缀
             if (!suffixList.contains(suffix)) {
                 throw new ServiceException(ResultCode.PARAM_CHECK_FAILED.getCode(), "unsupported file format");
@@ -99,8 +104,12 @@ public class FileService {
         });
         List<File> files = upload(multipartFiles, true);
         return files.stream()
-                .map(file -> File.separator + fileDir + File.separator + file.getName())
+                .map(FileService::getFileUrl)
                 .collect(Collectors.toList());
+    }
+
+    private static String getFileUrl(File file) {
+        return File.separator + fileDir + File.separator + file.getName();
     }
 
     public static String timeFormat(Long time) {
@@ -109,5 +118,18 @@ public class FileService {
         }
         DateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
         return sdf.format(time);
+
+    }
+
+    public List<ImageVO> listImages() {
+        //首次需生成目录
+        File folder = new File(resourceLocation);
+        if (!folder.exists()) {
+            folder.mkdirs();
+        }
+        return Arrays.stream(Objects.requireNonNull(folder.listFiles()))
+                .map(file -> new ImageVO(file.getName(), getFileUrl(file)))
+                .peek(image -> image.setIsUsed(CollectionUtils.isNotEmpty(productDao.findImageByFuzzy(image.getFileName()))))
+                .collect(Collectors.toList());
     }
 }

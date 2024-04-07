@@ -31,6 +31,9 @@ public interface ProductDao extends JpaRepository<ProductDO, Long> {
     @Query("select product from ProductDO product where product.title like %:fuzzy% or product.model like %:fuzzy%")
     <S extends ProductDO> List<S> findTitleByFuzzy(@Param("fuzzy") String fuzzy);
 
+    @Query("select product from ProductDO product where product.imgList like %:fuzzy%")
+    <S extends ProductDO> List<S> findImageByFuzzy(@Param("fuzzy") String fuzzy);
+
 
 
 

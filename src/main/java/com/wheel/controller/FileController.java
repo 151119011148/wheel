@@ -1,6 +1,7 @@
 package com.wheel.controller;
 
 import com.wheel.common.exception.ResultCode;
+import com.wheel.controller.response.ImageVO;
 import com.wheel.controller.response.Response;
 import com.wheel.service.FileService;
 import org.apache.commons.collections.CollectionUtils;
@@ -56,6 +57,21 @@ public class FileController extends BaseController {
         return new Response<>()
                 .withData(urls)
                 .withErrorMsg("上传成功");
+    }
+
+
+    /**
+     * 获取图片信息
+     *
+     * @param
+     * @return
+     */
+    @PostMapping("/listImages")
+    public Response<List<ImageVO>> listImages() {
+        List<ImageVO> images = fileService.listImages();
+        return new Response<>()
+                .withData(images)
+                .withErrorMsg("获取图片成功");
     }
 
 
