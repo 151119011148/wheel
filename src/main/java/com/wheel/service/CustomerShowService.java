@@ -22,14 +22,10 @@ import java.util.stream.Collectors;
 @Service
 public class CustomerShowService {
 
-    @Resource
-    CategoryService categoryService;
 
     @Resource
     CustomerShowDao customerShowDao;
 
-    @Resource
-    Mapper beanMapper;
 
 
     public Set<String> findAllBrand() {
@@ -43,28 +39,28 @@ public class CustomerShowService {
     }
 
     public CustomerShowDO addOne(CustomerShowDO data) {
-        data.setProductId("Show_Id_" + UUID.randomUUID().toString().replace("-", ""));
+        data.setCustomerShowId("Show_Id_" + UUID.randomUUID().toString().replace("-", ""));
         return customerShowDao.save(data);
     }
 
-    public Boolean removeOne(String productId) {
-        CustomerShowDO record = this.get(productId);
+    public Boolean removeOne(String showId) {
+        CustomerShowDO record = this.get(showId);
         record.setIsRemoved(1);
         customerShowDao.save(record);
         return Boolean.TRUE;
     }
 
     public CustomerShowDO editOne(CustomerShowDO update) {
-        CustomerShowDO record = this.get(update.getProductId());
+        CustomerShowDO record = this.get(update.getCustomerShowId());
         record.update(update);
         record.setIsRemoved(0);
         return customerShowDao.save(record);
     }
 
-    private CustomerShowDO get(String productId) {
-        CustomerShowVO param = new CustomerShowVO();
-        param.setProductId(productId);
-        Example<CustomerShowDO> example = Example.of(beanMapper.map(param, CustomerShowDO.class));
+    private CustomerShowDO get(String showId) {
+        CustomerShowDO param = new CustomerShowDO();
+        param.setCustomerShowId(showId);
+        Example<CustomerShowDO> example = Example.of(param);
         example.getProbe().setIsRemoved(0);
         CustomerShowDO product = customerShowDao.findOne(example).orElseThrow(() -> new ServiceException(ResultCode.USER_NOT_EXIST.getCode(), "current product is invalid！"));
         return product;
@@ -87,19 +83,19 @@ public class CustomerShowService {
                 .collect(Collectors.toList());
     }
 
-    private List<CustomerShowDO> findById(String productId) {
+    private List<CustomerShowDO> findById(String showId) {
         CustomerShowDO param = new CustomerShowDO();
-        param.setProductId(productId);
+        param.setCustomerShowId(showId);
         Example<CustomerShowDO> example = Example.of(param);
         example.getProbe().setIsRemoved(0);
         return customerShowDao.findAll(example);
     }
 
 
-    public CustomerShowVO findOneById(String productId) {
-        CustomerShowVO param = new CustomerShowVO();
-        param.setProductId(productId);
-        Example<CustomerShowDO> example = Example.of(beanMapper.map(param, CustomerShowDO.class));
+    public CustomerShowVO findOneById(String showId) {
+        CustomerShowDO param = new CustomerShowDO();
+        param.setCustomerShowId(showId);
+        Example<CustomerShowDO> example = Example.of(param);
         example.getProbe().setIsRemoved(0);
         return customerShowDao
                 .findOne(example)

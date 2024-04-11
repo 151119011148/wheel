@@ -88,4 +88,26 @@ CREATE TABLE
     PRIMARY KEY ( `id` )
     );
 
+CREATE TABLE
+    IF
+    NOT EXISTS `wheel`.`customer_show` (
+    `id` INT ( 0 ) NOT NULL AUTO_INCREMENT,
+    `show_id` VARCHAR ( 64 ) COMMENT 'show_id',
+    `product_id` VARCHAR ( 64 ) COMMENT 'product_id',
+    `product_name` VARCHAR ( 32 ) COMMENT 'product_name',
+    `category_id` VARCHAR ( 64 ) COMMENT 'category_id',
+    `category_name` VARCHAR ( 64 ),
+    `primary_image` TINYINT ( 4 ) COMMENT '是否是主图',
+    `image` VARCHAR ( 255 ) COMMENT '图片地址',
+    `brand_name` VARCHAR ( 255 ) COMMENT '品牌名称',
+    `car_model` VARCHAR ( 255 ) COMMENT '车型号',
+    `gmt_create` datetime NOT NULL COMMENT '创建时间',
+    `gmt_modified` datetime NOT NULL COMMENT '修改时间',
+    `is_removed` TINYINT ( 4 ) NOT NULL COMMENT '是否被删除',
+    PRIMARY KEY ( `id` )
+    );
+
+
+
+
 

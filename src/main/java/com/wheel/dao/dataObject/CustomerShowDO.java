@@ -1,6 +1,5 @@
 package com.wheel.dao.dataObject;
 
-import com.wheel.controller.response.CustomerShowVO;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.annotation.CreatedDate;
@@ -9,7 +8,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 
 import static javax.persistence.TemporalType.TIMESTAMP;
