@@ -2,7 +2,7 @@ package com.wheel.controller.response;
 
 import lombok.Data;
 
-import java.util.List;
+import java.util.Date;
 
 @Data
 public class ImageVO {
@@ -13,9 +13,12 @@ public class ImageVO {
 
     private Boolean isUsed;
 
+    private Date modifiedTime;
 
-    public ImageVO(String fileName, String url) {
+
+    public ImageVO(String fileName, String url, Date createdTime) {
         this.fileName = fileName;
         this.url = url;
+        this.modifiedTime = createdTime;
     }
 }

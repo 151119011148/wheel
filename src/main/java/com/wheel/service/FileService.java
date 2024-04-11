@@ -5,7 +5,6 @@ import com.wheel.common.exception.ResultCode;
 import com.wheel.common.exception.ServiceException;
 import com.wheel.controller.response.ImageVO;
 import com.wheel.dao.ProductDao;
-import com.wheel.dao.dataObject.ProductDO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -134,8 +133,9 @@ public class FileService {
                     String fileExtension = fileName.substring(lastIndexOfDot + 1);
                     return fileUploadSuffix.contains(fileExtension);
                 })
-                .map(file -> new ImageVO(file.getName(), getFileUrl(file)))
+                .map(file -> new ImageVO(file.getName(), getFileUrl(file), new Date(file.lastModified())))
                 .peek(image -> image.setIsUsed(CollectionUtils.isNotEmpty(productDao.findImageByFuzzy(image.getFileName()))))
+                .sorted(Comparator.comparing(ImageVO::getModifiedTime).reversed())
                 .collect(Collectors.toList());
     }
 }
