@@ -53,6 +53,7 @@ public class CustomerShowVO {
     public static CustomerShowVO read4(CustomerShowDO param) {
         CustomerShowVO result = new CustomerShowVO();
         result.setProductId(param.getProductId());
+        result.setCategoryId(param.getCategoryId());
         result.setCreatedTime(param.getCreatedTime());
         result.setModifiedTime(param.getModifiedTime());
         ShowInfo showInfo = new ShowInfo();
