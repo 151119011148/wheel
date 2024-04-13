@@ -4,6 +4,8 @@ import com.wheel.dao.dataObject.CustomerShowDO;
 import com.wheel.dao.dataObject.ProductDO;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -28,6 +30,12 @@ public interface CustomerShowDao extends JpaRepository<CustomerShowDO, Long> {
         }
         return Optional.of(result.get(0));
     }
+
+    @Query("select show from CustomerShowDO show where show.productName like %:fuzzy% " +
+            "or show.categoryName like %:fuzzy% " +
+            "or show.brandName like %:fuzzy% " +
+            "or show.carModel like %:fuzzy% ")
+    <S extends CustomerShowDO> Page<S> pageFuzzy(@Param("fuzzy") String fuzzy, Pageable pageable);
 
 
 

@@ -2,6 +2,7 @@ package com.wheel.service;
 
 import com.wheel.common.exception.ResultCode;
 import com.wheel.common.exception.ServiceException;
+import com.wheel.controller.request.ShowQueryParam;
 import com.wheel.controller.response.CustomerShowVO;
 import com.wheel.controller.response.ProductVO;
 import com.wheel.dao.CustomerShowDao;
@@ -10,6 +11,9 @@ import com.wheel.dao.dataObject.ProductDO;
 import org.apache.commons.lang3.StringUtils;
 import org.dozer.Mapper;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Nullable;
@@ -67,6 +71,24 @@ public class CustomerShowService {
     }
 
 
+    public Page<CustomerShowVO> page(ShowQueryParam param) {
+        PageRequest pageRequest = new PageRequest(param.getPageIndex(), param.getPageSize());
+        Example<CustomerShowDO> example = Example.of(new CustomerShowDO());
+        example.getProbe().setIsRemoved(0);
+        if (StringUtils.isEmpty(param.getQueryValue())){
+            Page<CustomerShowDO> pageRecord = customerShowDao.findAll(example, pageRequest);
+            Page<CustomerShowVO> pageResult = new PageImpl(pageRecord.getContent().parallelStream()
+                    .map(CustomerShowVO::read4)
+                    .collect(Collectors.toList()), pageRecord.getPageable(), pageRecord.getTotalElements());
+            return pageResult;
+        }
+        Page<CustomerShowDO> pageRecord = customerShowDao.pageFuzzy(param.getQueryValue(), pageRequest);
+        Page<CustomerShowVO> pageResult = new PageImpl(pageRecord.getContent().parallelStream()
+                .map(CustomerShowVO::read4)
+                .collect(Collectors.toList()), pageRecord.getPageable(), pageRecord.getTotalElements());
+        return pageResult;
+    }
+
     /**
      * 模糊搜索
      *
@@ -78,7 +100,6 @@ public class CustomerShowService {
         example.getProbe().setIsRemoved(0);
         return customerShowDao.findAll(example)
                 .parallelStream()
-//                .filter(item -> Objects.item.getIsRemoved())
                 .map(CustomerShowVO::read4)
                 .collect(Collectors.toList());
     }
@@ -102,5 +123,6 @@ public class CustomerShowService {
                 .map(CustomerShowVO::read4)
                 .orElseThrow(() -> new ServiceException(ResultCode.USER_NOT_EXIST.getCode(), "current product is invalid！"));
     }
+
 
 }

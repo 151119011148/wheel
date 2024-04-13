@@ -1,14 +1,19 @@
 package com.wheel.controller;
 
+import com.wheel.common.exception.ResultCode;
+import com.wheel.controller.request.ShowQueryParam;
 import com.wheel.controller.response.CustomerShowVO;
+import com.wheel.controller.response.Pager;
 import com.wheel.controller.response.ProductVO;
 import com.wheel.controller.response.Response;
 import com.wheel.dao.dataObject.CustomerShowDO;
 import com.wheel.service.CustomerShowService;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 
@@ -68,13 +73,22 @@ public class CustomerShowController extends BaseController {
 
     /**
      *
-     *
+     * 分页模糊查询
      * @return
      */
-    @GetMapping("")
-    public Response<List<CustomerShowVO>> search(@RequestParam(value = "", required = false) String searchKey) {
-        List<CustomerShowVO> data = customerShowService.search(searchKey);
-        return new Response<>().withData(data);
+    @GetMapping("/page")
+    public Response<List<CustomerShowVO>> search(ShowQueryParam param) {
+        if (Objects.isNull(param.getPageIndex()) || Objects.isNull(param.getPageSize())){
+            return new Response<>(ResultCode.PARAM_ERROR.getCode(), "page must not null!");
+        }
+        Integer pageIndex = param.getPageIndex();
+        param.setPageIndex(pageIndex - 1);
+
+        Page<CustomerShowVO> pageResult = customerShowService.page(param);
+        Pager pager = new Pager(pageIndex, param.getPageSize(), pageResult.getTotalElements());
+        return new Response<>()
+                .withPager(pager)
+                .withData(pageResult.getContent());
     }
 
 

@@ -15,7 +15,11 @@ public class CustomerShowVO {
 
     private String productId;
 
+    private String productName;
+
     private String categoryId;
+
+    private String categoryName;
 
     private List<ShowInfo> showInfo;
 
@@ -53,7 +57,9 @@ public class CustomerShowVO {
     public static CustomerShowVO read4(CustomerShowDO param) {
         CustomerShowVO result = new CustomerShowVO();
         result.setProductId(param.getProductId());
+        result.setProductName(param.getProductName());
         result.setCategoryId(param.getCategoryId());
+        result.setCategoryName(param.getCategoryName());
         result.setCreatedTime(param.getCreatedTime());
         result.setModifiedTime(param.getModifiedTime());
         ShowInfo showInfo = new ShowInfo();
@@ -69,7 +75,9 @@ public class CustomerShowVO {
     public static CustomerShowDO convert2(CustomerShowVO param) {
         CustomerShowDO result = new CustomerShowDO();
         result.setProductId(param.getProductId());
+        result.setProductName(param.getProductName());
         result.setCategoryId(param.getCategoryId());
+        result.setCategoryName(param.getCategoryName());
         if (CollectionUtils.isNotEmpty(param.getShowInfo())){
             result.setPrimaryImage(param.getShowInfo().get(0).getPrimaryImage());
             result.setImage(param.getShowInfo().get(0).getImage());
