@@ -1,5 +1,6 @@
 package com.wheel.service;
 
+import com.google.common.collect.Lists;
 import com.wheel.common.exception.ResultCode;
 import com.wheel.common.exception.ServiceException;
 import com.wheel.controller.request.ShowQueryParam;
@@ -52,6 +53,16 @@ public class CustomerShowService {
         record.setIsRemoved(1);
         customerShowDao.save(record);
         return Boolean.TRUE;
+    }
+
+    public void remove(List<String> showIds) {
+        List<CustomerShowDO> records = Lists.newArrayList();
+        showIds.parallelStream().forEach(id -> {
+            records.addAll(this.findById(id));
+        });
+        records.parallelStream()
+                .peek(record -> record.setIsRemoved(1))
+                .forEach(this::editOne);
     }
 
     public CustomerShowDO editOne(CustomerShowDO update) {
@@ -123,6 +134,7 @@ public class CustomerShowService {
                 .map(CustomerShowVO::read4)
                 .orElseThrow(() -> new ServiceException(ResultCode.USER_NOT_EXIST.getCode(), "current product is invalid！"));
     }
+
 
 
 }

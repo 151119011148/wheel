@@ -70,6 +70,20 @@ public class CustomerShowController extends BaseController {
                 .withErrorMsg("删除show成功");
     }
 
+    /**
+     * 通过 id 批量删除show
+     *
+     * @param showIds
+     * @return
+     */
+    @PostMapping("/remove")
+    public Response<Boolean> remove(@RequestBody List<String> showIds) {
+        customerShowService.remove(showIds);
+        return new Response<>()
+                .withData(Boolean.TRUE)
+                .withErrorMsg("删除show成功");
+    }
+
 
     /**
      *
