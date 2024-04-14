@@ -61,12 +61,12 @@ public class CustomerShowService {
             records.addAll(this.findById(id));
         });
         records.parallelStream()
-                .peek(record -> record.setIsRemoved(1))
-                .forEach(this::editOne);
+                .map(CustomerShowDO::getCustomerShowId)
+                .forEach(this::removeOne);
     }
 
-    public CustomerShowDO editOne(CustomerShowDO update) {
-        CustomerShowDO record = this.get(update.getCustomerShowId());
+    public CustomerShowDO editOne(String showId, CustomerShowDO update) {
+        CustomerShowDO record = this.get(showId);
         record.update(update);
         record.setIsRemoved(0);
         return customerShowDao.save(record);

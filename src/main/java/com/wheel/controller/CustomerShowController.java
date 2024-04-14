@@ -115,7 +115,7 @@ public class CustomerShowController extends BaseController {
      */
     @PutMapping("/{showId}")
     public Response<CustomerShowVO> edit(@PathVariable String showId, @RequestBody CustomerShowVO param) {
-        CustomerShowDO customerShow = customerShowService.editOne(CustomerShowVO.convert2(param));
+        CustomerShowDO customerShow = customerShowService.editOne(showId, CustomerShowVO.convert2(param));
         return new Response<>()
                 .withData(CustomerShowVO.read4(customerShow))
                 .withErrorMsg("修改信息成功");
