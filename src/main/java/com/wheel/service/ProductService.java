@@ -54,8 +54,8 @@ public class ProductService {
         return Boolean.TRUE;
     }
 
-    public ProductDO editOne(ProductDO update) {
-        ProductDO record = this.get(update.getProductId());
+    public ProductDO editOne(String productId, ProductDO update) {
+        ProductDO record = this.get(productId);
         record.update(update);
         record.setIsRemoved(0);
         return productDao.save(record);

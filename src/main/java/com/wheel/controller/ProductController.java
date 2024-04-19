@@ -109,7 +109,7 @@ public class ProductController extends BaseController {
      */
     @PutMapping("/{productId}")
     public Response<ProductVO> edit(@PathVariable String productId, @RequestBody ProductVO param) {
-        ProductDO product = productService.editOne(ProductVO.convert2(param));
+        ProductDO product = productService.editOne(productId, ProductVO.convert2(param));
         return new Response<>()
                 .withData(ProductVO.read4(product))
                 .withErrorMsg("修改信息成功");
