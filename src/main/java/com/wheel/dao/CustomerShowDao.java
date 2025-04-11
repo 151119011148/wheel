@@ -31,10 +31,12 @@ public interface CustomerShowDao extends JpaRepository<CustomerShowDO, Long> {
         return Optional.of(result.get(0));
     }
 
-    @Query("select show from CustomerShowDO show where show.productName like %:fuzzy% " +
+    @Query("select show from CustomerShowDO show where " +
+            "show.isRemoved =0 " +
+            "and (show.productName like %:fuzzy% " +
             "or show.categoryName like %:fuzzy% " +
             "or show.brandName like %:fuzzy% " +
-            "or show.carModel like %:fuzzy% ")
+            "or show.carModel like %:fuzzy%) ")
     <S extends CustomerShowDO> Page<S> pageFuzzy(@Param("fuzzy") String fuzzy, Pageable pageable);
 
 

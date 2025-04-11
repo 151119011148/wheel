@@ -44,7 +44,7 @@ public class CategoryDO {
     @Column(name = "category_desc")
     private String categoryDesc;
 
-    @Column(name = "index")
+    @Column(name = "category_index")
     private String index;
 
     @CreatedDate
