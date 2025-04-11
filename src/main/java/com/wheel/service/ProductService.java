@@ -14,10 +14,7 @@ import com.wheel.dao.dataObject.CategoryDO;
 import com.wheel.dao.dataObject.ProductDO;
 import org.apache.commons.lang3.StringUtils;
 import org.dozer.Mapper;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Nullable;
@@ -104,7 +101,8 @@ public class ProductService {
 
 
     public Page<ProductVO> page(ProductQueryParam param) {
-        PageRequest pageRequest = new PageRequest(param.getPageIndex(), param.getPageSize());
+        Sort sort = Sort.by(Sort.Direction.DESC, "id");
+        PageRequest pageRequest = PageRequest.of(param.getPageIndex(), param.getPageSize(), sort);
         //查询购物车商品信息
         if (StringUtils.equals(param.getQueryKey(), "in_basket")) {
             BasketDO basketParam = new BasketDO();
